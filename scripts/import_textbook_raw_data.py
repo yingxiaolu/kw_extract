@@ -20,9 +20,20 @@ def load_data():
     return contents
 
 
-mongo_client = MongoClient()
-for content in load_data():
-    status, msg = mongo_client.insert_raw_document(**content)
-    if status != 0:
-        print(status, msg)
+def import_data():
+    mongo_client = MongoClient()
+    for content in load_data():
+        status, msg = mongo_client.insert_raw_document(**content)
+        if status != 0:
+            print(status, msg)
 
+
+def check_data():
+    mongo_client = MongoClient()
+    for content in mongo_client.raw_document_table.find():
+        print(content)
+        break
+
+
+if __name__ == '__main__':
+    check_data()
