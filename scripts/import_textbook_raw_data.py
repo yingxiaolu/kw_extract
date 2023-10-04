@@ -23,5 +23,6 @@ def load_data():
 mongo_client = MongoClient()
 for content in load_data():
     status, msg = mongo_client.insert_raw_document(**content)
-    print(status, msg)
-    break
+    if status != 0:
+        print(status, msg)
+
