@@ -31,6 +31,7 @@ def import_data():
 def check_data():
     mongo_client = MongoClient()
     for content in mongo_client.raw_document_table.find():
+        content["text"] = content[:100]
         print(content)
         break
 
