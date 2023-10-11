@@ -1,4 +1,9 @@
 # stage 0: load text
+import os.path
+
+from lib.utils import dump_json
+
+
 def load_text(fn):
     with open(fn, encoding="utf-8") as fin:
         return fin.read()
@@ -22,7 +27,7 @@ def find_index_or_glossary_part(raw_text):
         pg_content = paragraphs[ind]
         if pg_content.strip().lower() in kws:
             index_marks.append(ind)
-    print(index_marks)
+    # print(index_marks)
     if len(index_marks) == 0:
         return ""
     gap = 100
@@ -38,9 +43,24 @@ def find_index_or_glossary_part(raw_text):
 def process(fn):
     raw_text = load_text(fn)
     index_or_glossary_part = find_index_or_glossary_part(raw_text)
-    # print(index_or_glossary_part)
+    return index_or_glossary_part
+
+
+def batch_process():
+    base_dir = "data/raw_data_textbook"
+    index = 0
+    for major in ["finance", "economics"]:
+        major_dir = os.path.join(base_dir, major)
+        for course in os.listdir(major_dir):
+            course_dir = os.path.join(major_dir, course)
+            for text_book in os.listdir(course_dir):
+                if text_book.endswith(".txt"):
+                    text_book_index_or_glossary = process(os.path.join(course_dir, text_book))
+                    dump_json({"major": major, "course": course, "textbook": text_book, "index_glossary_part": text_book_index_or_glossary}, f"./data/textbook_index_glossary/{index}.json")
+                    index += 1
 
 
 if __name__ == '__main__':
-    process("./data/sample/sample_textbook.txt")
+    # process("./data/sample/sample_textbook.txt")
+    batch_process()
 
