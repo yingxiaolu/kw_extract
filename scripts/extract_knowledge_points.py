@@ -1,6 +1,6 @@
-# stage 0: load text
 import os.path
-
+import sys
+sys.path.append("./")
 from lib.utils import dump_json
 
 
