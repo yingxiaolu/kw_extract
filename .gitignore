@@ -1,5 +1,6 @@
 .idea/
 *__pycache__/
 *.pyc
-data/
 alpaca-lora/
+data/mongo_store/
+data/
